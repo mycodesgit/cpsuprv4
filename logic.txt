@@ -1,0 +1,18 @@
++------------------+     ICT Items?     +------------------+
+| User Submits PR  | -----------------> |   MIS Checker    | (Stage: mis_review)
++------------------+    (has_ict=true)  +------------------+
+         |                                       | Approved
+         | No ICT Items                          v
+         +----------------------------> +------------------+
+                                        | Procurement Check| (Stage: procurement_review)
+                                        +------------------+
+                                                 | Approved
+                                                 v
+                                        +------------------+
+                                        |  Budget Officer  | (Stage: budget_review)
+                                        +------------------+
+                                                 | Approved
+                                                 v
+                                        +------------------+
+                                        | COMPLETED/PASSED | (status = approved)
+                                        +------------------+
