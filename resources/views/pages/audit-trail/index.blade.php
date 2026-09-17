@@ -287,7 +287,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="auditCategoryDetailsModal" tabindex="-1" aria-labelledby="auditCategoryDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -301,7 +301,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="auditunitDetailsModal" tabindex="-1" aria-labelledby="auditunitDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -315,7 +315,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="auditItemDetailsModal" tabindex="-1" aria-labelledby="auditItemDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -343,7 +343,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="auditYearDetailsModal" tabindex="-1" aria-labelledby="auditYearDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">

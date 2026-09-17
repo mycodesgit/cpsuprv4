@@ -70,7 +70,7 @@
                 },
             ],
             "createdRow": function (row, data, index) {
-                $(row).attr('id', 'tr-' + data.id); 
+                $(row).attr('id', 'tr-' + data.id);
             }
         });
         $(document).on('categoryAdded', function() {

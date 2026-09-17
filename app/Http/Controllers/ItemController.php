@@ -13,10 +13,10 @@ use Carbon\Carbon;
 use Jenssegers\Agent\Agent;
 
 use App\Models\User;
-use App\Models\Category;        
-use App\Models\Unit;        
-use App\Models\Item;        
-use App\Models\AuditTrailItem;  
+use App\Models\Category;
+use App\Models\Unit;
+use App\Models\Item;
+use App\Models\AuditTrailItem;
 
 class ItemController extends Controller
 {
@@ -24,10 +24,10 @@ class ItemController extends Controller
     {
         $categories = Category::all();
         $units = Unit::all();
-        
+
         return view('pages.manage.item', compact('categories', 'units'));
     }
-    
+
     public function show()
     {
         $data = Item::with('user', 'category', 'unit')->get();
@@ -35,7 +35,7 @@ class ItemController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function create(Request $request) 
+    public function create(Request $request)
     {
         if ($request->isMethod('post')) {
             $request->validate([
@@ -45,7 +45,7 @@ class ItemController extends Controller
                 'estimated_cost' => 'required',
             ]);
 
-            $itemName = $request->input('item_description'); 
+            $itemName = $request->input('item_description');
             $existingItem = Item::where('item_description', $itemName)->first();
 
             if ($existingItem) {
@@ -61,11 +61,11 @@ class ItemController extends Controller
 
             try {
                 $item = Item::create([
-                    'user_id'          => Auth::user()->id, 
+                    'user_id'          => Auth::user()->id,
                     'category_id'      => $category->id,
                     'unit_id'          => $unit->id,
-                    'cname'            => $category->category_name, 
-                    'uname'            => $unit->unit_name,         
+                    'cname'            => $category->category_name,
+                    'uname'            => $unit->unit_name,
                     'item_description' => $request->input('item_description'),
                     'estimated_cost'   => (float) $cleanCost,
                 ]);
@@ -80,7 +80,7 @@ class ItemController extends Controller
         }
     }
 
-    public function update(Request $request) 
+    public function update(Request $request)
     {
         $request->validate([
             'id' => 'required',
@@ -108,7 +108,7 @@ class ItemController extends Controller
 
             // 3. Perform update including cname and uname
             $item->update([
-                'user_id'          => Auth::user()->id, 
+                'user_id'          => Auth::user()->id,
                 'category_id'      => $category->id,
                 'unit_id'          => $unit->id,
                 'cname'            => $category->category_name,
@@ -139,7 +139,7 @@ class ItemController extends Controller
         $agent = new Agent();
         $agent->setUserAgent($request->userAgent());
 
-        $browser  = $agent->browser();   
+        $browser  = $agent->browser();
         $platform = $agent->platform();
 
         AuditTrailItem::create([
@@ -148,7 +148,7 @@ class ItemController extends Controller
             'action'     => $action,
             'actiondata' => json_encode($payload),
             'ip_address' => $request->ip(),
-            'user_agent' => $browser . ' on ' . $platform, 
+            'user_agent' => $browser . ' on ' . $platform,
             'login_at'   => now(),
         ]);
     }
