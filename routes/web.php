@@ -37,6 +37,7 @@ Route::group(['middleware'=>['guest']],function(){
 
 Route::group(['middleware'=>['login_auth']],function(){
     Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard.index');
+    Route::get('/dashboard/chart-data',[DashboardController::class,'chartData'])->name('dashboard.chart-data');
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
     Route::prefix('/manage')->group(function () {

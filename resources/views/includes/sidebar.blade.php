@@ -29,7 +29,7 @@
             </a>
 
             <div class="collapse {{ $manageOpen ? 'show' : '' }}" id="manageMenu">
-                <ul class="nav flex-column ms-3 mt-1">
+                <ul class="nav flex-column mt-1">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('manage/categorylist*') ? 'active' : '' }}" href="{{ route('category.index') }}">
                             <i class="ti ti-box"></i> <span class="nav-text">Category</span>
@@ -58,7 +58,7 @@
                 </ul>
             </div>
         </li>
-    @endif 
+    @endif
 
     @if(Auth::user()->role == 'Administrator' && Auth::user()->role !='Procurement Officer' && Auth::user()->role !='Checker' && Auth::user()->role !='MIS Checker')
         <li>
@@ -76,18 +76,18 @@
             <a class="nav-link {{$usersAllActive}}" href="{{ route('user.index') }}">
                 <i class="ti ti-users"></i><span class="nav-text">Users</span>
             </a>
-        </li> 
+        </li>
     @endif
     @if(Auth::guard('web')->user()->role == 'Administrator')
         <li>
             <a class="nav-link {{ $rolesAllActive }}" href="{{ route('roles.index') }}">
                 <i class="ti ti-id-badge"></i><span class="nav-text">User Roles</span>
             </a>
-        </li> 
+        </li>
         <li>
             <a class="nav-link {{ $auditAllActive }}" href="{{ route('audit-trail.index') }}">
                 <i class="ti ti-record-mail"></i><span class="nav-text">Audit Logs</span>
             </a>
-        </li> 
+        </li>
     @endif
 </ul>

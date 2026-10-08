@@ -5,43 +5,39 @@
 @endsection
 
 @section('body')
+    @php
+        $chartMonths ??= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $chartPending ??= [8, 12, 9, 14, 11, 16, 13, 18, 12, 15, 10, 9];
+        $chartApproved ??= [22, 28, 25, 31, 29, 35, 33, 38, 30, 34, 27, 24];
+    @endphp
     <div class="row">
         <div class="col-12">
             <div class="mb-4">
-                
+
                 <!-- Dashboard Header -->
                 <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
                     <div>
-                        <h1 class="h4 fw-bold mb-1">Purchase Request Management Dashboard</h1>
+                        <h1 class="h5 fw-bold mb-1">Dashboard</h1>
                         <p class="text-muted small mb-0">System metrics, departmental request analytics, and real-time activity logs.</p>
                     </div>
                     <div class="d-flex gap-2">
-                        <button class="btn btn-sm btn-outline-secondary">
-                            <i class="ti ti-plus"></i> Create PAP's / PRE
-                        </button>
+                        <form id="yearForm" class="d-flex align-items-center gap-2">
+                            <label for="yearSelect" class="form-label mb-0 small text-muted">Year:</label>
+                            <select id="yearSelect" name="year" class="form-select form-select-sm">
+                                @php $selectedYear = request('year', date('Y')); @endphp
+                                @for ($y = date('Y'); $y >= date('Y') - 4; $y--)
+                                    <option value="{{ $y }}" {{ $selectedYear == $y ? 'selected' : '' }}>{{ $y }}</option>
+                                @endfor
+                            </select>
+                        </form>
                     </div>
-                </div>              
+                </div>
 
                 <!-- Middle Row: Analytics Chart & Right Side Widgets -->
                 <div class="row g-3">
                     <!-- Monthly Submissions Bar Chart -->
                     <div class="col-lg-9">
-                        <div class="card card-animate mb-3">
-                            <div class="card-body d-flex flex-column justify-content-between">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <h5 class="card-title fw-bold mb-1">Purchase Requests Submitted</h5>
-                                        <p class="text-muted small mb-0">Monthly submission breakdown for current year</p>
-                                    </div>
-                                    <span class="badge bg-light text-dark border">Jan - Dec</span>
-                                </div>
-                                <div style="height: 200px;">
-                                    <canvas id="prSubmissionsChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Bottom Row: Metric Cards -->
+                        <!-- Top Row: Metric Cards -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-3">
                                 <div class="card card-animate h-100">
@@ -85,6 +81,23 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="card card-animate mb-3">
+                            <div class="card-header pt-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="fw-semibold">
+                                        <i class="ti ti-device-laptop me-1"></i> Purchase Requests Submitted (Jan 1 - Dec 31, <span id="displaySupportSelectedYear">{{ $selectedYear }}</span>)
+                                    </h6>
+                                    {{-- <span class="spinner-grow spinner-grow-sm text-success me-2" role="status"></span> --}}
+                                    <span class="small">
+                                        <span class="badge bg-light text-dark border">Jan - Dec</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div id="prSubmissionsChart"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Right Column: Dynamic Calendar & Announcements -->
@@ -103,7 +116,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                
+
                                 <div class="shadcn-calendar">
                                     <div class="calendar-grid calendar-header text-muted small fw-medium mb-2">
                                         <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
@@ -127,8 +140,8 @@
                                             <span class="d-block text-dark fw-medium small text-truncate">Q3 Budget Clearance Deadline</span>
                                             <small class="text-muted">Sep 15, 2026</small>
                                         </div>
-                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;" 
-                                                data-bs-toggle="modal" 
+                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#announcementModal"
                                                 data-title="Q3 Budget Clearance Deadline"
                                                 data-date="Sep 15, 2026"
@@ -140,8 +153,8 @@
                                             <span class="d-block text-dark fw-medium small text-truncate">Scheduled System Maintenance</span>
                                             <small class="text-muted">Sep 18, 2026</small>
                                         </div>
-                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;" 
-                                                data-bs-toggle="modal" 
+                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#announcementModal"
                                                 data-title="Scheduled System Maintenance"
                                                 data-date="Sep 18, 2026"
@@ -153,8 +166,8 @@
                                             <span class="d-block text-dark fw-medium small text-truncate">New IT Procurement Guidelines</span>
                                             <small class="text-muted">Sep 20, 2026</small>
                                         </div>
-                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;" 
-                                                data-bs-toggle="modal" 
+                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#announcementModal"
                                                 data-title="New IT Procurement Guidelines"
                                                 data-date="Sep 20, 2026"
@@ -166,8 +179,8 @@
                                             <span class="d-block text-dark fw-medium small text-truncate">Updated Vendor Selection Form</span>
                                             <small class="text-muted">Sep 22, 2026</small>
                                         </div>
-                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;" 
-                                                data-bs-toggle="modal" 
+                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#announcementModal"
                                                 data-title="Updated Vendor Selection Form"
                                                 data-date="Sep 22, 2026"
@@ -179,8 +192,8 @@
                                             <span class="d-block text-dark fw-medium small text-truncate">Year-End Inventory Audit</span>
                                             <small class="text-muted">Oct 01, 2026</small>
                                         </div>
-                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;" 
-                                                data-bs-toggle="modal" 
+                                        <button class="btn btn-sm btn-secondary py-0 px-2 text-nowrap" style="font-size: 0.75rem;"
+                                                data-bs-toggle="modal"
                                                 data-bs-target="#announcementModal"
                                                 data-title="Year-End Inventory Audit"
                                                 data-date="Oct 01, 2026"
@@ -216,8 +229,6 @@
         </div>
     </div>
 
-    <!-- Chart.js Script and Custom Styles -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .calendar-grid {
             display: grid;
@@ -250,131 +261,10 @@
     </style>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // --- 1. Chart Initialization ---
-            const ctx = document.getElementById('prSubmissionsChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [{
-                        label: 'Submitted PRs',
-                        data: [65, 78, 90, 81, 95, 110, 105, 125, 115, 130, 100, 140],
-                        backgroundColor: '#65ac86',
-                        borderRadius: 4,
-                        borderSkipped: false,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        x: { grid: { display: false } },
-                        y: {
-                            border: { dash: [4, 4] },
-                            grid: { color: '#f1f5f9' },
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-
-            // --- 2. Dynamic Calendar Implementation ---
-            let currentDate = new Date(2026, 8, 10); // Initialized to September 2026 based on dashboard data
-            const today = new Date(2026, 8, 10); // Reference date for current day highlight
-
-            // Sample events array (Format: YYYY-MM-DD)
-            const sampleEvents = ['2026-09-16', '2026-09-20', '2026-10-01'];
-
-            function renderCalendar(date) {
-                const monthYearText = document.getElementById('calendarMonthYear');
-                const calendarDays = document.getElementById('calendarDays');
-                calendarDays.innerHTML = '';
-
-                const year = date.getFullYear();
-                const month = date.getMonth();
-
-                // Format month header (e.g., September 2026)
-                const monthNames = ["January", "February", "March", "April", "May", "June", 
-                                    "July", "August", "September", "October", "November", "December"];
-                monthYearText.innerText = `${monthNames[month]} ${year}`;
-
-                // Get first day index of current month and total days
-                const firstDayIndex = new Date(year, month, 1).getDay();
-                const totalDays = new Date(year, month + 1, 0).getDate();
-                const prevLastDay = new Date(year, month, 0).getDate();
-
-                // 1. Previous Month's Trailing Days
-                for (let x = firstDayIndex; x > 0; x--) {
-                    const dayDiv = document.createElement('div');
-                    dayDiv.classList.add('text-muted', 'opacity-25');
-                    dayDiv.innerText = prevLastDay - x + 1;
-                    calendarDays.appendChild(dayDiv);
-                }
-
-                // 2. Current Month Days
-                for (let i = 1; i <= totalDays; i++) {
-                    const dayDiv = document.createElement('div');
-                    dayDiv.innerText = i;
-
-                    // Check if day is today
-                    if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                        dayDiv.classList.add('day-active');
-                    }
-
-                    // Check for sample events
-                    const formattedMonth = String(month + 1).padStart(2, '0');
-                    const formattedDay = String(i).padStart(2, '0');
-                    const dateStr = `${year}-${formattedMonth}-${formattedDay}`;
-
-                    if (sampleEvents.includes(dateStr) && !dayDiv.classList.contains('day-active')) {
-                        dayDiv.classList.add('day-event');
-                    }
-
-                    calendarDays.appendChild(dayDiv);
-                }
-
-                // 3. Next Month's Leading Days (Pad remaining grid slots to maintain full rows)
-                const totalGridSlots = calendarDays.children.length;
-                const remainingSlots = (totalGridSlots % 7 === 0) ? 0 : 7 - (totalGridSlots % 7);
-                for (let j = 1; j <= remainingSlots; j++) {
-                    const dayDiv = document.createElement('div');
-                    dayDiv.classList.add('text-muted', 'opacity-25');
-                    dayDiv.innerText = j;
-                    calendarDays.appendChild(dayDiv);
-                }
-            }
-
-            // Initial render
-            renderCalendar(currentDate);
-
-            // Previous Month Button Action
-            document.getElementById('prevMonth').addEventListener('click', function() {
-                currentDate.setMonth(currentDate.getMonth() - 1);
-                renderCalendar(currentDate);
-            });
-
-            // Next Month Button Action
-            document.getElementById('nextMonth').addEventListener('click', function() {
-                currentDate.setMonth(currentDate.getMonth() + 1);
-                renderCalendar(currentDate);
-            });
-
-            // --- 3. Announcement Modal Population ---
-            const modalElement = document.getElementById('announcementModal');
-            modalElement.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-                const title = button.getAttribute('data-title');
-                const date = button.getAttribute('data-date');
-                const content = button.getAttribute('data-content');
-
-                document.getElementById('modalTitle').innerText = title;
-                document.getElementById('modalDate').innerHTML = `<i class="ti ti-calendar me-1"></i> Posted on ${date}`;
-                document.getElementById('modalContent').innerText = content;
-            });
-        });
+        window.prChartMonths = @json($chartMonths);
+        window.prChartPending = @json($chartPending);
+        window.prChartApproved = @json($chartApproved);
     </script>
+
+
 @endsection

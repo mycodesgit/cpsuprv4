@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>@yield('title')</title>
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('uilibs/images/cpsulogov4.png') }}">
@@ -49,7 +49,7 @@
                 <!-- Dropdown -->
                 <li class="ms-3 dropdown">
                     <a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{ asset('uilibs/images/user.png') }}" alt="" class="avatar avatar-sm rounded-circle" /> 
+                        <img src="{{ asset('uilibs/images/user.png') }}" alt="" class="avatar avatar-sm rounded-circle" />
                     </a>
                     <div class="dropdown-menu dropdown-menu-end p-0" style="min-width: 200px;">
                         <div>
@@ -57,7 +57,7 @@
                                 <img src="{{ asset('uilibs/images/user.png') }}" alt="" class="avatar avatar-md rounded-circle" />
                                 <div>
                                     <h5 class="mb-0 small"></h5>
-                                    
+
                                 </div>
                             </div>
                             <div class="p-3 d-flex flex-column gap-1 medium lh-lg">
@@ -141,6 +141,8 @@
     <script src="{{ asset('uilibs/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- ChartJS -->
     <script src="{{ asset('uilibs/plugins/chart.js/Chart.min.js') }}"></script>
+    <!-- ApexCharts (grouped column: Pending vs Approved, Jan-Dec) -->
+    <script src="{{ asset('uilibs/plugins/apexcharts/apexcharts.min.js') }}"></script>
     <!-- Validation JS -->
     <script src="{{ asset('uilibs/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('uilibs/plugins/jquery-validation/additional-methods.min.js') }}"></script>
@@ -171,6 +173,11 @@
     <!-- Load Chart.js CDN explicitly -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
+
+    @if (request()->routeIs('dashboard.index'))
+        @include('script.dash.dashcalendarAnnouncejs')
+        @include('script.dash.dashprchartjs')
+    @endif
     @if (request()->routeIs('category.index'))
         @include('script.mnge.categoryjs')
     @endif
@@ -200,6 +207,6 @@
         @include('script.audit.offcejs')
         @include('script.audit.yearprjs')
     @endif
-    
+
 </body>
 </html>
